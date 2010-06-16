@@ -235,7 +235,7 @@ public class TarEntry {
     }
 
     /**
-     * Parses the org.xeustechnologies.jtar header to the byte buffer
+     * Parses the tar header to the byte buffer
      * 
      * @param header
      * @param bh
