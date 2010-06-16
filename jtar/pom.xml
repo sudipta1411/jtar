@@ -4,7 +4,7 @@
     <groupId>org.xeustechnologies.jtar</groupId>
     <artifactId>jtar</artifactId>
     <name>JTar</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <description>Java Tar API</description>
 
     <build>
