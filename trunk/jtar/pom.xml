@@ -6,7 +6,25 @@
     <name>JTar</name>
     <version>1.0</version>
     <description>Java Tar API</description>
-
+    <developers>
+        <developer>
+            <id>kzafar</id>
+            <name>Kamran Zafar</name>
+            <email>kamran.zafar@xeustechnologies.org
+            </email>
+            <organization>Xeus Technologies</organization>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>Apache Software License</name>
+            <url>${basedir}/LICENSE.txt
+            </url>
+        </license>
+    </licenses>
     <build>
         <sourceDirectory>${basedir}/src/main/java
         </sourceDirectory>
