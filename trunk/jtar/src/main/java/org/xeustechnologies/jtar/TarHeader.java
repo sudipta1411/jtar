@@ -97,12 +97,12 @@ public class TarHeader {
 
     public static final int MAGICLEN = 8;
     /**
-     * The magic tag representing a POSIX org.xeustechnologies.jtar archive.
+     * The magic tag representing a POSIX tar archive.
      */
     public static final String TMAGIC = "ustar";
 
     /**
-     * The magic tag representing a GNU org.xeustechnologies.jtar archive.
+     * The magic tag representing a GNU tar archive.
      */
     public static final String GNU_TMAGIC = "ustar  ";
 

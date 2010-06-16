@@ -113,7 +113,7 @@ public class TarInputStream extends FilterInputStream {
     }
 
     /**
-     * Returns the next entry in the org.xeustechnologies.jtar file
+     * Returns the next entry in the tar file
      * 
      * @return TarEntry
      * @throws IOException
@@ -141,7 +141,7 @@ public class TarInputStream extends FilterInputStream {
     }
 
     /**
-     * Closes the current org.xeustechnologies.jtar entry
+     * Closes the current tar entry
      * 
      * @throws IOException
      */
@@ -160,7 +160,7 @@ public class TarInputStream extends FilterInputStream {
     }
 
     /**
-     * Skips the pad at the end of each org.xeustechnologies.jtar entry file
+     * Skips the pad at the end of each tar entry file content
      * 
      * @throws IOException
      */

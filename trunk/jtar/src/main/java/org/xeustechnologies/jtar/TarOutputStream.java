@@ -37,7 +37,7 @@ public class TarOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Appends the EOF record and closes the org.xeustechnologies.jtar file
+     * Appends the EOF record and closes the stream
      * 
      * @see java.io.FilterOutputStream#close()
      */
@@ -82,7 +82,7 @@ public class TarOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Writes the next org.xeustechnologies.jtar entry header on the stream
+     * Writes the next tar entry header on the stream
      * 
      * @param entry
      * @throws IOException
@@ -99,7 +99,7 @@ public class TarOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Closes the current org.xeustechnologies.jtar entry
+     * Closes the current tar entry
      * 
      * @throws IOException
      */
