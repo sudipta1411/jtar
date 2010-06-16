@@ -58,9 +58,9 @@ public class JTarTest {
             }
 
             FileOutputStream fos = new FileOutputStream( destFolder + "/" + entry.getName() );
-            dest = new BufferedOutputStream( fos, BUFFER );
+            dest = new BufferedOutputStream( fos );
 
-            while(( count = tis.read( data, 0, BUFFER ) ) != -1) {
+            while(( count = tis.read( data ) ) != -1) {
                 dest.write( data, 0, count );
             }
 
@@ -105,14 +105,14 @@ public class JTarTest {
                 }
 
                 FileInputStream fi = new FileInputStream( fe );
-                origin = new BufferedInputStream( fi, BUFFER );
+                origin = new BufferedInputStream( fi );
 
                 TarEntry entry = new TarEntry( fe, parent + files[i] );
                 out.putNextEntry( entry );
 
                 int count;
                 int bc = 0;
-                while(( count = origin.read( data, 0, BUFFER ) ) != -1) {
+                while(( count = origin.read( data ) ) != -1) {
                     out.write( data, 0, count );
                     bc += count;
                 }
