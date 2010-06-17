@@ -31,7 +31,7 @@ public class TarInputStream extends FilterInputStream {
     private long currentFileSize;
     private long bytesRead;
 
-    protected TarInputStream(InputStream in) {
+    public TarInputStream(InputStream in) {
         super( in );
         currentFileSize = 0;
         bytesRead = 0;
