@@ -25,6 +25,10 @@
             </url>
         </license>
     </licenses>
+    <organization>
+    	<name>Xeus Technologies</name>
+    	<url>http://xeustechnologies.org</url>
+    </organization>
     <build>
         <sourceDirectory>${basedir}/src/main/java
         </sourceDirectory>
