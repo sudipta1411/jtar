@@ -107,7 +107,7 @@ public class TarOutputStream extends FilterOutputStream {
         if( currentEntry != null ) {
             if( currentEntry.getSize() > currentFileSize ) {
                 throw new IOException( "The current entry[" + currentEntry.getName() + "] of size["
-                        + currentEntry.getSize() + "] has not be fully written." );
+                        + currentEntry.getSize() + "] has not been fully written." );
             }
 
             currentEntry = null;
