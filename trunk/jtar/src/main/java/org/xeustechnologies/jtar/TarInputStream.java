@@ -51,17 +51,11 @@ public class TarInputStream extends FilterInputStream {
     }
 
     /**
-     * Resets the stream and counters
+     * Not supported
      * 
-     * @see java.io.FilterInputStream#reset()
      */
     @Override
     public synchronized void reset() throws IOException {
-        super.reset();
-
-        bytesRead = 0;
-        currentFileSize = 0;
-        currentEntry = null;
     }
 
     /**
