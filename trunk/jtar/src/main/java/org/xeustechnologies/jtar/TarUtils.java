@@ -9,8 +9,9 @@ public class TarUtils {
 
     private static long tarSize(File dir) {
         long size = 0;
+
         if( dir.isFile() ) {
-            size += entrySize( dir.length() );
+            return entrySize( dir.length() );
         } else {
             File[] subFiles = dir.listFiles();
 
@@ -19,12 +20,12 @@ public class TarUtils {
                     if( file.isFile() ) {
                         size += entrySize( file.length() );
                     } else {
-                        size += calculateTarSize( file );
+                        size += tarSize( file );
                     }
                 }
             } else {
                 // Empty folder header
-                size += TarConstants.HEADER_BLOCK;
+                return TarConstants.HEADER_BLOCK;
             }
         }
 
@@ -35,7 +36,12 @@ public class TarUtils {
         long size = 0;
         size += TarConstants.HEADER_BLOCK; // Header
         size += fileSize; // File size
-        size += TarConstants.DATA_BLOCK - ( fileSize % TarConstants.DATA_BLOCK ); // pad
+
+        long extra = size % TarConstants.DATA_BLOCK;
+
+        if( extra > 0 ) {
+            size += ( TarConstants.DATA_BLOCK - extra ); // pad
+        }
 
         return size;
     }
