@@ -39,12 +39,15 @@ public class JTarTest {
      */
     @Test
     public void tar() throws IOException {
-        FileOutputStream dest = new FileOutputStream( "c:/test/test.tar" );
+        FileOutputStream dest = new FileOutputStream( "K:/dev/test/test.tar" );
         TarOutputStream out = new TarOutputStream( new BufferedOutputStream( dest ) );
 
-        tarFolder( null, "c:/test/tartest", out );
+        tarFolder( null, "K:/dev/test/tartest", out );
 
         out.close();
+
+        System.out.println( "Calculated tar size: " + TarUtils.calculateTarSize( new File( "K:/dev/test/tartest" ) ) );
+        System.out.println( "Actual tar size: " + new File( "K:/dev/test/test.tar" ).length() );
     }
 
     /**
@@ -54,8 +57,8 @@ public class JTarTest {
      */
     @Test
     public void untar() throws IOException {
-        File zf = new File( "c:/test/test.tar" );
-        String destFolder = "c:/test/untartest";
+        File zf = new File( "K:/dev/test/test.tar" );
+        String destFolder = "K:/dev/test/untartest";
 
         BufferedOutputStream dest = null;
         FileInputStream fis = new FileInputStream( zf );
