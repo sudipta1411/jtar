@@ -120,10 +120,13 @@ public class TarInputStream extends FilterInputStream {
 
         int res = read( header );
 
-        // Invalid header size
+        // Header not fully read
+        // Read rest of the header
         if( res != TarConstants.HEADER_BLOCK ) {
-            throw new IOException( "Invalid entry header of size [" + res + "]; expected [" + TarConstants.HEADER_BLOCK
-                    + "]" );
+            byte[] th = new byte[TarConstants.HEADER_BLOCK - res];
+            int res1 = read( th );
+
+            System.arraycopy( th, 0, header, res - 1, res1 );
         }
 
         // Check if record is null
