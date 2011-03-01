@@ -64,7 +64,7 @@ public class JTarTest {
         FileInputStream fis = new FileInputStream( zf );
         TarInputStream tis = new TarInputStream( new BufferedInputStream( fis ) );
         TarEntry entry;
-        while (( entry = tis.getNextEntry() ) != null) {
+        while(( entry = tis.getNextEntry() ) != null) {
             System.out.println( "Extracting: " + entry.getName() );
             int count;
             byte data[] = new byte[BUFFER];
@@ -73,14 +73,16 @@ public class JTarTest {
                 new File( destFolder + "/" + entry.getName() ).mkdirs();
                 continue;
             } else {
-                new File( destFolder + "/" + entry.getName().substring( 0, entry.getName().lastIndexOf( '/' ) ) )
-                        .mkdirs();
+                int di = entry.getName().lastIndexOf( '/' );
+                if( di != -1 ) {
+                    new File( destFolder + "/" + entry.getName().substring( 0, di ) ).mkdirs();
+                }
             }
 
             FileOutputStream fos = new FileOutputStream( destFolder + "/" + entry.getName() );
             dest = new BufferedOutputStream( fos );
 
-            while (( count = tis.read( data ) ) != -1) {
+            while(( count = tis.read( data ) ) != -1) {
                 dest.write( data, 0, count );
             }
 
@@ -131,7 +133,7 @@ public class JTarTest {
 
             int count;
             int bc = 0;
-            while (( count = origin.read( data ) ) != -1) {
+            while(( count = origin.read( data ) ) != -1) {
                 out.write( data, 0, count );
                 bc += count;
             }
