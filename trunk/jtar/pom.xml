@@ -4,7 +4,7 @@
 	<groupId>org.xeustechnologies</groupId>
 	<artifactId>jtar</artifactId>
 	<name>JTar</name>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<description>Java Tar API</description>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
