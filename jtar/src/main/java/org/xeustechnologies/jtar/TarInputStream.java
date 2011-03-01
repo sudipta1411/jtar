@@ -117,16 +117,14 @@ public class TarInputStream extends FilterInputStream {
         closeCurrentEntry();
 
         byte[] header = new byte[TarConstants.HEADER_BLOCK];
+        byte[] theader = new byte[TarConstants.HEADER_BLOCK];
+        int tr = 0;
 
-        int res = read( header );
-
-        // Header not fully read
-        // Read rest of the header
-        if( res != TarConstants.HEADER_BLOCK ) {
-            byte[] th = new byte[TarConstants.HEADER_BLOCK - res];
-            int res1 = read( th );
-
-            System.arraycopy( th, 0, header, res - 1, res1 );
+        // Read full header
+        while(tr < TarConstants.HEADER_BLOCK) {
+            int res = read( theader, 0, TarConstants.HEADER_BLOCK - tr );
+            System.arraycopy( theader, 0, header, tr, res );
+            tr += res;
         }
 
         // Check if record is null
@@ -154,7 +152,12 @@ public class TarInputStream extends FilterInputStream {
         if( currentEntry != null ) {
             if( currentEntry.getSize() > currentFileSize ) {
                 // Not fully read, skip rest of the bytes
-                skip( currentEntry.getSize() - currentFileSize );
+                long bs = 0;
+                while(bs < currentEntry.getSize() - currentFileSize) {
+                    long res = skip( currentEntry.getSize() - currentFileSize - bs );
+                    bs += res;
+                }
+
                 bytesRead += ( currentEntry.getSize() - currentFileSize );
             }
 
@@ -174,7 +177,12 @@ public class TarInputStream extends FilterInputStream {
             int extra = (int) ( bytesRead % TarConstants.DATA_BLOCK );
 
             if( extra > 0 ) {
-                skip( TarConstants.DATA_BLOCK - extra );
+                long bs = 0;
+                while(bs < TarConstants.DATA_BLOCK - extra) {
+                    long res = skip( TarConstants.DATA_BLOCK - extra - bs );
+                    bs += res;
+                }
+
                 bytesRead += ( TarConstants.DATA_BLOCK - extra );
             }
         }
