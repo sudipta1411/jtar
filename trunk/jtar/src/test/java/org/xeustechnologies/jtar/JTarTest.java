@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.GZIPInputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,13 +57,38 @@ public class JTarTest {
      * @throws IOException
      */
     @Test
-    public void untar() throws IOException {
-        File zf = new File( "K:/dev/test/test.tar" );
-        String destFolder = "K:/dev/test/untartest";
+    public void untarTarFile() throws IOException {
+        String destFolder = "K:/dev/test";
+        File zf = new File( "K:/dev/test/httpd-2.2.17.tar" );
 
+        TarInputStream tis = new TarInputStream( new BufferedInputStream( new FileInputStream( zf ) ) );
+
+        untar( tis, destFolder );
+
+        tis.close();
+    }
+
+    /**
+     * Untar the gzipped-tar file
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void untarTGzFile() throws IOException {
+        String destFolder = "K:/dev/test";
+        File zf = new File( "K:/dev/test/medium.tar.gz" );
+
+        TarInputStream tis = new TarInputStream( new BufferedInputStream(
+                new GZIPInputStream( new FileInputStream( zf ) ) ) );
+
+        untar( tis, destFolder );
+
+        tis.close();
+    }
+
+    private void untar(TarInputStream tis, String destFolder) throws IOException {
         BufferedOutputStream dest = null;
-        FileInputStream fis = new FileInputStream( zf );
-        TarInputStream tis = new TarInputStream( new BufferedInputStream( fis ) );
+
         TarEntry entry;
         while(( entry = tis.getNextEntry() ) != null) {
             System.out.println( "Extracting: " + entry.getName() );
@@ -89,7 +115,6 @@ public class JTarTest {
             dest.flush();
             dest.close();
         }
-        tis.close();
     }
 
     public void tarFolder(String parent, String path, TarOutputStream out) throws IOException {
