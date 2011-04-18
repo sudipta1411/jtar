@@ -27,6 +27,7 @@ import java.io.InputStream;
  */
 public class TarInputStream extends FilterInputStream {
 
+    private static final int SKIP_BUFFER_SIZE = 2048;
     private TarEntry currentEntry;
     private long currentFileSize;
     private long bytesRead;
@@ -137,6 +138,7 @@ public class TarInputStream extends FilterInputStream {
         }
 
         if( !eof ) {
+            bytesRead += header.length;
             currentEntry = new TarEntry( header );
         }
 
@@ -186,5 +188,30 @@ public class TarInputStream extends FilterInputStream {
                 bytesRead += ( TarConstants.DATA_BLOCK - extra );
             }
         }
+    }
+
+    /**
+     * Skips 'n' bytes on the InputStream<br>
+     * Overrides default implementation of skip
+     * 
+     */
+    @Override
+    public long skip(long n) throws IOException {
+        if( n <= 0 ) {
+            return 0;
+        }
+
+        long left = n;
+        byte[] sBuff = new byte[SKIP_BUFFER_SIZE];
+
+        while(left > 0) {
+            int res = read( sBuff, 0, (int) ( left < SKIP_BUFFER_SIZE ? left : SKIP_BUFFER_SIZE ) );
+            if( res < 0 ) {
+                break;
+            }
+            left -= res;
+        }
+
+        return n - left;
     }
 }
