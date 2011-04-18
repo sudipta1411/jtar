@@ -57,7 +57,7 @@ public class JTarTest {
      * 
      * @throws IOException
      */
-    // @Test
+    @Test
     public void untarTarFile() throws IOException {
         String destFolder = "/home/kamran/tmp/untartest";
         File zf = new File( "/home/kamran/tmp/test.tar" );
@@ -74,7 +74,7 @@ public class JTarTest {
      * 
      * @throws IOException
      */
-    // @Test
+    @Test
     public void untarTGzFile() throws IOException {
         String destFolder = "/home/kamran/tmp/untartest";
         File zf = new File( "/home/kamran/tmp/test.tar.gz" );
