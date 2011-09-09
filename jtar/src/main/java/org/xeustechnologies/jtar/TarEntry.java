@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Xeus Technologies 
+ * Copyright 2010 Kamran Zafar 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -131,14 +131,14 @@ public class TarEntry {
      * @return
      */
     public boolean isDirectory() {
-        if( this.file != null )
+        if (this.file != null)
             return this.file.isDirectory();
 
-        if( this.header != null ) {
-            if( this.header.linkFlag == TarHeader.LF_DIR )
+        if (this.header != null) {
+            if (this.header.linkFlag == TarHeader.LF_DIR)
                 return true;
 
-            if( this.header.name.toString().endsWith( "/" ) )
+            if (this.header.name.toString().endsWith( "/" ))
                 return true;
         }
 
@@ -155,17 +155,17 @@ public class TarEntry {
 
         name = name.replace( File.separatorChar, '/' );
 
-        if( name.startsWith( "/" ) )
+        if (name.startsWith( "/" ))
             name = name.substring( 1 );
 
         header.linkName = new StringBuffer( "" );
 
         header.name = new StringBuffer( name );
 
-        if( file.isDirectory() ) {
+        if (file.isDirectory()) {
             header.mode = 040755;
             header.linkFlag = TarHeader.LF_DIR;
-            if( header.name.charAt( header.name.length() - 1 ) != '/' )
+            if (header.name.charAt( header.name.length() - 1 ) != '/')
                 header.name.append( "/" );
         } else {
             header.mode = 0100644;
@@ -188,7 +188,7 @@ public class TarEntry {
     public long computeCheckSum(byte[] buf) {
         long sum = 0;
 
-        for( int i = 0; i < buf.length; ++i ) {
+        for (int i = 0; i < buf.length; ++i) {
             sum += 255 & buf[i];
         }
 
@@ -214,7 +214,7 @@ public class TarEntry {
         offset = Octal.getLongOctalBytes( this.header.modTime, outbuf, offset, TarHeader.MODTIMELEN );
 
         int csOffset = offset;
-        for( int c = 0; c < TarHeader.CHKSUMLEN; ++c )
+        for (int c = 0; c < TarHeader.CHKSUMLEN; ++c)
             outbuf[offset++] = (byte) ' ';
 
         outbuf[offset++] = this.header.linkFlag;
@@ -226,7 +226,7 @@ public class TarEntry {
         offset = Octal.getOctalBytes( this.header.devMajor, outbuf, offset, TarHeader.DEVLEN );
         offset = Octal.getOctalBytes( this.header.devMinor, outbuf, offset, TarHeader.DEVLEN );
 
-        for( ; offset < outbuf.length; )
+        for (; offset < outbuf.length;)
             outbuf[offset++] = 0;
 
         long checkSum = this.computeCheckSum( outbuf );

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Xeus Technologies 
+ * Copyright 2010 Kamran Zafar 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -134,7 +134,7 @@ public class TarHeader {
 
         String user = System.getProperty( "user.name", "" );
 
-        if( user.length() > 31 )
+        if (user.length() > 31)
             user = user.substring( 0, 31 );
 
         this.userId = 0;
@@ -159,8 +159,8 @@ public class TarHeader {
         StringBuffer result = new StringBuffer( length );
 
         int end = offset + length;
-        for( int i = offset; i < end; ++i ) {
-            if( header[i] == 0 )
+        for (int i = offset; i < end; ++i) {
+            if (header[i] == 0)
                 break;
             result.append( (char) header[i] );
         }
@@ -183,11 +183,11 @@ public class TarHeader {
     public static int getNameBytes(StringBuffer name, byte[] buf, int offset, int length) {
         int i;
 
-        for( i = 0; i < length && i < name.length(); ++i ) {
+        for (i = 0; i < length && i < name.length(); ++i) {
             buf[offset + i] = (byte) name.charAt( i );
         }
 
-        for( ; i < length; ++i ) {
+        for (; i < length; ++i) {
             buf[offset + i] = 0;
         }
 
