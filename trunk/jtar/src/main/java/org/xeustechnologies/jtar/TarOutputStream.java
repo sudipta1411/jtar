@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Xeus Technologies 
+ * Copyright 2010 Kamran Zafar 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -58,7 +58,7 @@ public class TarOutputStream extends FilterOutputStream {
         super.write( b );
         bytesWritten += 1;
 
-        if( currentEntry != null ) {
+        if (currentEntry != null) {
             currentFileSize += 1;
         }
     }
@@ -70,8 +70,8 @@ public class TarOutputStream extends FilterOutputStream {
      */
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
-        if( currentEntry != null && !currentEntry.isDirectory() ) {
-            if( currentEntry.getSize() < currentFileSize + len ) {
+        if (currentEntry != null && !currentEntry.isDirectory()) {
+            if (currentEntry.getSize() < currentFileSize + len) {
                 throw new IOException( "The current entry[" + currentEntry.getName() + "] size["
                         + currentEntry.getSize() + "] is smaller than the bytes[" + ( currentFileSize + len )
                         + "] being written." );
@@ -104,8 +104,8 @@ public class TarOutputStream extends FilterOutputStream {
      * @throws IOException
      */
     protected void closeCurrentEntry() throws IOException {
-        if( currentEntry != null ) {
-            if( currentEntry.getSize() > currentFileSize ) {
+        if (currentEntry != null) {
+            if (currentEntry.getSize() > currentFileSize) {
                 throw new IOException( "The current entry[" + currentEntry.getName() + "] of size["
                         + currentEntry.getSize() + "] has not been fully written." );
             }
@@ -123,10 +123,10 @@ public class TarOutputStream extends FilterOutputStream {
      * @throws IOException
      */
     protected void pad() throws IOException {
-        if( bytesWritten > 0 ) {
+        if (bytesWritten > 0) {
             int extra = (int) ( bytesWritten % TarConstants.DATA_BLOCK );
 
-            if( extra > 0 ) {
+            if (extra > 0) {
                 write( new byte[TarConstants.DATA_BLOCK - extra] );
             }
         }

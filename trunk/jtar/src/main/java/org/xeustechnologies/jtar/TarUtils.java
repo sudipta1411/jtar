@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Xeus Technologies 
+ * Copyright 2010 Kamran Zafar 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -37,14 +37,14 @@ public class TarUtils {
     private static long tarSize(File dir) {
         long size = 0;
 
-        if( dir.isFile() ) {
+        if (dir.isFile()) {
             return entrySize( dir.length() );
         } else {
             File[] subFiles = dir.listFiles();
 
-            if( subFiles != null && subFiles.length > 0 ) {
-                for( File file : subFiles ) {
-                    if( file.isFile() ) {
+            if (subFiles != null && subFiles.length > 0) {
+                for (File file : subFiles) {
+                    if (file.isFile()) {
                         size += entrySize( file.length() );
                     } else {
                         size += tarSize( file );
@@ -66,7 +66,7 @@ public class TarUtils {
 
         long extra = size % TarConstants.DATA_BLOCK;
 
-        if( extra > 0 ) {
+        if (extra > 0) {
             size += ( TarConstants.DATA_BLOCK - extra ); // pad
         }
 
