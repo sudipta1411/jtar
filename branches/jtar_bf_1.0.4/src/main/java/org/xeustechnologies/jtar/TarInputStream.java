@@ -31,6 +31,7 @@ public class TarInputStream extends FilterInputStream {
     private TarEntry currentEntry;
     private long currentFileSize;
     private long bytesRead;
+    private boolean defaultSkip = false;
 
     public TarInputStream(InputStream in) {
         super( in );
@@ -71,7 +72,7 @@ public class TarInputStream extends FilterInputStream {
 
         int res = this.read( buf, 0, 1 );
 
-        if (res != -1) {
+        if( res != -1 ) {
             return buf[0];
         }
 
@@ -87,18 +88,18 @@ public class TarInputStream extends FilterInputStream {
      */
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        if (currentEntry != null) {
-            if (currentFileSize == currentEntry.getSize()) {
+        if( currentEntry != null ) {
+            if( currentFileSize == currentEntry.getSize() ) {
                 return -1;
-            } else if (( currentEntry.getSize() - currentFileSize ) < len) {
+            } else if( ( currentEntry.getSize() - currentFileSize ) < len ) {
                 len = (int) ( currentEntry.getSize() - currentFileSize );
             }
         }
 
         int br = super.read( b, off, len );
 
-        if (br != -1) {
-            if (currentEntry != null) {
+        if( br != -1 ) {
+            if( currentEntry != null ) {
                 currentFileSize += br;
             }
 
@@ -122,10 +123,10 @@ public class TarInputStream extends FilterInputStream {
         int tr = 0;
 
         // Read full header
-        while (tr < TarConstants.HEADER_BLOCK) {
+        while(tr < TarConstants.HEADER_BLOCK) {
             int res = read( theader, 0, TarConstants.HEADER_BLOCK - tr );
 
-            if (res < 0) {
+            if( res < 0 ) {
                 break;
             }
 
@@ -135,14 +136,14 @@ public class TarInputStream extends FilterInputStream {
 
         // Check if record is null
         boolean eof = true;
-        for (byte b : header) {
-            if (b != 0) {
+        for( byte b : header ) {
+            if( b != 0 ) {
                 eof = false;
                 break;
             }
         }
 
-        if (!eof) {
+        if( !eof ) {
             bytesRead += header.length;
             currentEntry = new TarEntry( header );
         }
@@ -156,11 +157,11 @@ public class TarInputStream extends FilterInputStream {
      * @throws IOException
      */
     protected void closeCurrentEntry() throws IOException {
-        if (currentEntry != null) {
-            if (currentEntry.getSize() > currentFileSize) {
+        if( currentEntry != null ) {
+            if( currentEntry.getSize() > currentFileSize ) {
                 // Not fully read, skip rest of the bytes
                 long bs = 0;
-                while (bs < currentEntry.getSize() - currentFileSize) {
+                while(bs < currentEntry.getSize() - currentFileSize) {
                     long res = skip( currentEntry.getSize() - currentFileSize - bs );
                     bs += res;
                 }
@@ -178,12 +179,12 @@ public class TarInputStream extends FilterInputStream {
      * @throws IOException
      */
     protected void skipPad() throws IOException {
-        if (bytesRead > 0) {
+        if( bytesRead > 0 ) {
             int extra = (int) ( bytesRead % TarConstants.DATA_BLOCK );
 
-            if (extra > 0) {
+            if( extra > 0 ) {
                 long bs = 0;
-                while (bs < TarConstants.DATA_BLOCK - extra) {
+                while(bs < TarConstants.DATA_BLOCK - extra) {
                     long res = skip( TarConstants.DATA_BLOCK - extra - bs );
                     bs += res;
                 }
@@ -198,21 +199,35 @@ public class TarInputStream extends FilterInputStream {
      */
     @Override
     public long skip(long n) throws IOException {
-        if (n <= 0) {
+        if( defaultSkip ) {
+            // use skip method of parent stream
+            // may not work if skip not implemented by parent
+            return super.skip( n );
+        }
+
+        if( n <= 0 ) {
             return 0;
         }
 
         long left = n;
         byte[] sBuff = new byte[SKIP_BUFFER_SIZE];
 
-        while (left > 0) {
+        while(left > 0) {
             int res = read( sBuff, 0, (int) ( left < SKIP_BUFFER_SIZE ? left : SKIP_BUFFER_SIZE ) );
-            if (res < 0) {
+            if( res < 0 ) {
                 break;
             }
             left -= res;
         }
 
         return n - left;
+    }
+
+    public boolean isDefaultSkip() {
+        return defaultSkip;
+    }
+
+    public void setDefaultSkip(boolean defaultSkip) {
+        this.defaultSkip = defaultSkip;
     }
 }
