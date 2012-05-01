@@ -91,17 +91,17 @@ public class JTarTest {
         BufferedOutputStream dest = null;
 
         TarEntry entry;
-        while(( entry = tis.getNextEntry() ) != null) {
+        while (( entry = tis.getNextEntry() ) != null) {
             System.out.println( "Extracting: " + entry.getName() );
             int count;
             byte data[] = new byte[BUFFER];
 
-            if( entry.isDirectory() ) {
+            if (entry.isDirectory()) {
                 new File( destFolder + "/" + entry.getName() ).mkdirs();
                 continue;
             } else {
                 int di = entry.getName().lastIndexOf( '/' );
-                if( di != -1 ) {
+                if (di != -1) {
                     new File( destFolder + "/" + entry.getName().substring( 0, di ) ).mkdirs();
                 }
             }
@@ -109,7 +109,7 @@ public class JTarTest {
             FileOutputStream fos = new FileOutputStream( destFolder + "/" + entry.getName() );
             dest = new BufferedOutputStream( fos );
 
-            while(( count = tis.read( data ) ) != -1) {
+            while (( count = tis.read( data ) ) != -1) {
                 dest.write( data, 0, count );
             }
 
@@ -124,25 +124,25 @@ public class JTarTest {
         String files[] = f.list();
 
         // is file
-        if( files == null ) {
+        if (files == null) {
             files = new String[1];
             files[0] = f.getName();
         }
 
         parent = ( ( parent == null ) ? ( f.isFile() ) ? "" : f.getName() + "/" : parent + f.getName() + "/" );
 
-        for( int i = 0; i < files.length; i++ ) {
+        for (int i = 0; i < files.length; i++) {
             System.out.println( "Adding: " + files[i] );
             File fe = f;
             byte data[] = new byte[BUFFER];
 
-            if( f.isDirectory() ) {
+            if (f.isDirectory()) {
                 fe = new File( f, files[i] );
             }
 
-            if( fe.isDirectory() ) {
+            if (fe.isDirectory()) {
                 String[] fl = fe.list();
-                if( fl != null && fl.length != 0 ) {
+                if (fl != null && fl.length != 0) {
                     tarFolder( parent, fe.getPath(), out );
                 } else {
                     TarEntry entry = new TarEntry( fe, parent + files[i] + "/" );
@@ -160,7 +160,7 @@ public class JTarTest {
 
             int count;
             int bc = 0;
-            while(( count = origin.read( data ) ) != -1) {
+            while (( count = origin.read( data ) ) != -1) {
                 out.write( data, 0, count );
                 bc += count;
             }
