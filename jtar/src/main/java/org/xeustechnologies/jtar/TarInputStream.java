@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Kamran Zafar 
+ * Copyright 2012 Kamran Zafar 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -31,6 +31,7 @@ public class TarInputStream extends FilterInputStream {
     private TarEntry currentEntry;
     private long currentFileSize;
     private long bytesRead;
+    private boolean defaultSkip = false;
 
     public TarInputStream(InputStream in) {
         super( in );
@@ -162,6 +163,11 @@ public class TarInputStream extends FilterInputStream {
                 long bs = 0;
                 while (bs < currentEntry.getSize() - currentFileSize) {
                     long res = skip( currentEntry.getSize() - currentFileSize - bs );
+
+                    if (res == 0 && currentEntry.getSize() - currentFileSize > 0) {
+                        throw new IOException( "Possible tar file corruption" );
+                    }
+
                     bs += res;
                 }
             }
@@ -198,6 +204,12 @@ public class TarInputStream extends FilterInputStream {
      */
     @Override
     public long skip(long n) throws IOException {
+        if (defaultSkip) {
+            // use skip method of parent stream
+            // may not work if skip not implemented by parent
+            return super.skip( n );
+        }
+
         if (n <= 0) {
             return 0;
         }
@@ -214,5 +226,13 @@ public class TarInputStream extends FilterInputStream {
         }
 
         return n - left;
+    }
+
+    public boolean isDefaultSkip() {
+        return defaultSkip;
+    }
+
+    public void setDefaultSkip(boolean defaultSkip) {
+        this.defaultSkip = defaultSkip;
     }
 }
